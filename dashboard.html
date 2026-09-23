@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Finanças IA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/responsive.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- Sidebar (desktop) -->
+  <aside class="sidebar">
+    <div class="brand"><span class="mark">💰</span> Finanças IA</div>
+    <nav class="nav-list" aria-label="Navegação principal"></nav>
+    <div class="sidebar-footer">
+      <div class="theme-switch">
+        <span>Tema</span>
+        <button data-acao="alternar-tema"><span data-tema-atual>☀️</span></button>
+      </div>
+      <div class="user-chip">
+        <div class="user-avatar" data-user-inicial></div>
+        <div class="who"><strong data-user-nome></strong><span data-user-email></span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div>
+    <!-- Header -->
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px; position:relative;">
+        <button class="icon-btn" id="btn-abrir-menu" aria-label="Abrir menu" style="display:none;">☰</button>
+        <div class="global-search">
+          <span>🔍</span>
+          <input type="text" id="busca-global" placeholder="Buscar transações, metas, contas..." aria-label="Busca global">
+        </div>
+        <div id="busca-resultados" class="dropdown-panel" style="top:44px; left:0; right:auto; width:320px;"></div>
+      </div>
+      <div class="actions">
+        <div style="position:relative;">
+          <button class="icon-btn" data-dropdown-trigger="painel-notificacoes" aria-label="Notificações">🔔<span class="badge" id="badge-notificacoes"></span></button>
+          <div class="dropdown-panel" id="painel-notificacoes">
+            <div class="dd-head"><h4>Notificações</h4></div>
+            <div class="dd-list"></div>
+          </div>
+        </div>
+        <a class="icon-btn ai-btn" href="assistente.html" aria-label="Assistente IA" data-tooltip="Assistente IA">🤖</a>
+        <div style="position:relative;">
+          <button class="icon-btn" data-dropdown-trigger="painel-perfil" aria-label="Perfil"><span data-user-inicial style="font-size:13px; font-weight:700;"></span></button>
+          <div class="menu-panel" id="painel-perfil">
+            <a href="configuracoes.html" style="display:flex; gap:8px; padding:10px 14px; font-size:13px;">⚙️ Configurações</a>
+            <button data-acao="sair">🚪 Sair</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="welcome-bar page-head">
+        <div>
+          <h1 id="saudacao">Olá! 👋</h1>
+          <p>Aqui está um resumo da sua vida financeira.</p>
+        </div>
+        <button class="btn btn-primary" data-acao="nova-transacao">+ Nova transação</button>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="card kpi-card kpi-saldo">
+          <div class="kpi-top"><span class="kpi-icon">💼</span></div>
+          <div class="kpi-label">Saldo atual</div>
+          <div class="kpi-value count-up" id="kpi-saldo">R$ 0,00</div>
+          <div class="kpi-delta" id="kpi-saldo-delta"></div>
+        </div>
+        <div class="card kpi-card kpi-receitas">
+          <div class="kpi-top"><span class="kpi-icon">📈</span></div>
+          <div class="kpi-label">Receitas</div>
+          <div class="kpi-value count-up" id="kpi-receitas">R$ 0,00</div>
+          <div class="kpi-delta" id="kpi-receitas-delta"></div>
+        </div>
+        <div class="card kpi-card kpi-despesas">
+          <div class="kpi-top"><span class="kpi-icon">📉</span></div>
+          <div class="kpi-label">Despesas</div>
+          <div class="kpi-value count-up" id="kpi-despesas">R$ 0,00</div>
+          <div class="kpi-delta" id="kpi-despesas-delta"></div>
+        </div>
+        <div class="card kpi-card kpi-economia">
+          <div class="kpi-top"><span class="kpi-icon">🤖</span></div>
+          <div class="kpi-label">Economia do mês</div>
+          <div class="kpi-value count-up" id="kpi-economia">R$ 0,00</div>
+          <div class="kpi-delta" id="kpi-economia-delta"></div>
+        </div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="grid-2col">
+        <div class="card">
+          <div class="card-title">
+            <h3>Fluxo financeiro</h3>
+            <div class="chart-toolbar" id="toolbar-periodo">
+              <button data-periodo="7d">7 dias</button>
+              <button data-periodo="30d">30 dias</button>
+              <button data-periodo="6m" class="active">6 meses</button>
+              <button data-periodo="1a">1 ano</button>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="grafico-fluxo"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><h3>Despesas por categoria</h3></div>
+          <div class="chart-wrap sm"><canvas id="grafico-categorias"></canvas></div>
+          <div class="category-legend" id="legenda-categorias"></div>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <div class="card insight-card">
+          <div class="card-title"><h3>🤖 Insight da IA</h3><a href="assistente.html" class="muted">Conversar →</a></div>
+          <div id="lista-insights"></div>
+        </div>
+
+        <div class="card forecast-card">
+          <div class="card-title"><h3>🔮 Previsão</h3></div>
+          <p class="text-muted" style="font-size:13px; margin-bottom:14px;">Se você continuar no ritmo atual:</p>
+          <div class="forecast-grid">
+            <div class="forecast-item"><div class="lbl">Receita estimada</div><div class="val text-success" id="prev-receita">—</div></div>
+            <div class="forecast-item"><div class="lbl">Despesa estimada</div><div class="val text-danger" id="prev-despesa">—</div></div>
+            <div class="forecast-item"><div class="lbl">Saldo estimado</div><div class="val" id="prev-saldo">—</div></div>
+          </div>
+          <div class="forecast-disclaimer">ℹ️ Estimativas baseadas no seu histórico — não são garantias.</div>
+        </div>
+      </div>
+
+      <!-- Contas recorrentes -->
+      <div class="section-title"><h2>🔄 Contas recorrentes</h2><a href="configuracoes.html">Gerenciar →</a></div>
+      <div class="card"><div class="recurring-preview" id="lista-contas-recorrentes"></div></div>
+
+      <!-- Transações recentes -->
+      <div class="section-title"><h2>Transações recentes</h2><a href="transacoes.html">Ver todas →</a></div>
+      <div class="card">
+        <div class="tx-list" id="lista-transacoes-recentes"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Bottom nav mobile -->
+<nav class="bottom-nav" aria-label="Navegação mobile"></nav>
+<button class="fab-add" id="btn-fab-nova" aria-label="Nova transação" data-acao="nova-transacao">+</button>
+
+<!-- Drawer mobile -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="brand"><span class="mark">💰</span> Finanças IA <button id="btn-fechar-drawer" style="margin-left:auto; background:none; border:none; font-size:20px;">✕</button></div>
+  <nav class="nav-list"></nav>
+  <div class="sidebar-footer">
+    <div class="theme-switch"><span>Tema</span><button data-acao="alternar-tema"><span data-tema-atual>☀️</span></button></div>
+    <button class="btn btn-secondary btn-block" data-acao="sair">Sair</button>
+  </div>
+</div>
+
+<!-- Modal Nova Transação -->
+<div class="modal-overlay" id="modal-transacao">
+  <div class="modal">
+    <div class="modal-head"><h2 id="titulo-modal-transacao">Nova transação</h2><button class="icon-btn" data-close-modal>✕</button></div>
+    <div class="modal-body">
+      <form id="form-transacao" novalidate>
+        <input type="hidden" id="tx-id">
+        <div class="field">
+          <label>Tipo</label>
+          <div class="toggle-group" id="toggle-tipo">
+            <button type="button" data-tipo="despesa" class="active">Despesa</button>
+            <button type="button" data-tipo="receita">Receita</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="tx-descricao">Descrição</label>
+          <input class="input" id="tx-descricao" placeholder="Ex.: Supermercado" required>
+          <span class="error-msg">Informe uma descrição.</span>
+        </div>
+        <div class="input-group">
+          <div class="field" style="flex:1;">
+            <label for="tx-valor">Valor (R$)</label>
+            <input class="input" type="number" id="tx-valor" step="0.01" min="0.01" placeholder="0,00" required>
+            <span class="error-msg">Informe um valor válido.</span>
+          </div>
+          <div class="field" style="flex:1;">
+            <label for="tx-data">Data</label>
+            <input class="input" type="date" id="tx-data" required>
+            <span class="error-msg">Informe a data.</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="tx-categoria">Categoria</label>
+          <select class="input" id="tx-categoria" required></select>
+        </div>
+        <div class="field">
+          <label for="tx-forma">Forma de pagamento</label>
+          <select class="input" id="tx-forma"></select>
+        </div>
+        <div class="field">
+          <label for="tx-observacao">Observação (opcional)</label>
+          <textarea class="input" id="tx-observacao" placeholder="Alguma nota sobre essa transação..."></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+      <button class="btn btn-primary" id="btn-salvar-transacao">Salvar transação</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/transacoes.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

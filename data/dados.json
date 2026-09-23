@@ -1,0 +1,55 @@
+{
+  "_comentario": "Este arquivo é apenas um EXEMPLO da estrutura de dados usada pelo Finanças IA. Em tempo de execução, os dados reais são gerados por js/storage.js (função gerarDadosDemo) e persistidos no LocalStorage do navegador, não lidos deste arquivo.",
+  "versao": 1,
+  "perfil": {
+    "nome": "Usuário Demonstração",
+    "email": "demo@financasia.app",
+    "moeda": "BRL",
+    "idioma": "pt-BR"
+  },
+  "transacoes": [
+    {
+      "id": "tx_exemplo1",
+      "tipo": "receita",
+      "descricao": "Salário — Empresa XPTO",
+      "valor": 9800,
+      "categoria": "salario",
+      "data": "2026-09-04",
+      "formaPagamento": "Transferência",
+      "observacao": "",
+      "criadoEm": "2026-09-04T12:00:00.000Z"
+    },
+    {
+      "id": "tx_exemplo2",
+      "tipo": "despesa",
+      "descricao": "Restaurante",
+      "valor": 85,
+      "categoria": "alimentacao",
+      "data": "2026-09-21",
+      "formaPagamento": "Cartão de crédito",
+      "observacao": "",
+      "criadoEm": "2026-09-21T20:00:00.000Z"
+    }
+  ],
+  "metas": [
+    {
+      "id": "meta_exemplo1",
+      "nome": "Reserva de emergência",
+      "valorObjetivo": 10000,
+      "valorAtual": 6500,
+      "prazo": "2027-02-01",
+      "categoria": "Reserva de emergência",
+      "descricao": "Equivalente a 6 meses de despesas fixas.",
+      "criadoEm": "2026-06-01T12:00:00.000Z"
+    }
+  ],
+  "orcamentos": [
+    { "id": "orc_exemplo1", "categoria": "alimentacao", "limite": 1000 }
+  ],
+  "contasRecorrentes": [
+    { "id": "rec_exemplo1", "nome": "Netflix", "valor": 44.9, "categoria": "assinaturas", "diaVencimento": 5, "periodicidade": "Mensal", "ativo": true }
+  ],
+  "notificacoes": [
+    { "id": "ntf_exemplo1", "texto": "Seu orçamento de transporte chegou a 97%.", "tipo": "alerta", "lida": false, "data": "2026-09-22" }
+  ]
+}

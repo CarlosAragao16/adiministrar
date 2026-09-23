@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assistente IA — Finanças IA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="mark">💰</span> Finanças IA</div>
+    <nav class="nav-list" aria-label="Navegação principal"></nav>
+    <div class="sidebar-footer">
+      <div class="theme-switch"><span>Tema</span><button data-acao="alternar-tema"><span data-tema-atual>☀️</span></button></div>
+      <div class="user-chip">
+        <div class="user-avatar" data-user-inicial></div>
+        <div class="who"><strong data-user-nome></strong><span data-user-email></span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="icon-btn" id="btn-abrir-menu" aria-label="Abrir menu" style="display:none;">☰</button>
+        <h1 style="font-size:17px;">🤖 Finanças IA</h1>
+      </div>
+      <div class="actions">
+        <div style="position:relative;">
+          <button class="icon-btn" data-dropdown-trigger="painel-notificacoes" aria-label="Notificações">🔔<span class="badge" id="badge-notificacoes"></span></button>
+          <div class="dropdown-panel" id="painel-notificacoes">
+            <div class="dd-head"><h4>Notificações</h4></div>
+            <div class="dd-list"></div>
+          </div>
+        </div>
+        <div style="position:relative;">
+          <button class="icon-btn" data-dropdown-trigger="painel-perfil" aria-label="Perfil"><span data-user-inicial style="font-size:13px; font-weight:700;"></span></button>
+          <div class="menu-panel" id="painel-perfil">
+            <a href="configuracoes.html" style="display:flex; gap:8px; padding:10px 14px; font-size:13px;">⚙️ Configurações</a>
+            <button data-acao="sair">🚪 Sair</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="page-head">
+        <div><h1>Assistente financeiro</h1><p class="subtitle">Pergunte qualquer coisa sobre suas finanças — as respostas usam seus dados reais.</p></div>
+      </div>
+
+      <div class="card">
+        <div class="chat-shell">
+          <div class="chat-messages" id="chat-mensagens"></div>
+          <div class="chat-suggestions" id="chat-sugestoes"></div>
+          <form class="chat-input-bar" id="chat-form">
+            <input class="input" id="chat-input" placeholder="Pergunte sobre seus gastos, metas ou orçamento..." autocomplete="off">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Navegação mobile"></nav>
+
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="brand"><span class="mark">💰</span> Finanças IA <button id="btn-fechar-drawer" style="margin-left:auto; background:none; border:none; font-size:20px;">✕</button></div>
+  <nav class="nav-list"></nav>
+  <div class="sidebar-footer">
+    <div class="theme-switch"><span>Tema</span><button data-acao="alternar-tema"><span data-tema-atual>☀️</span></button></div>
+    <button class="btn btn-secondary btn-block" data-acao="sair">Sair</button>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/ai.js"></script>
+<script>document.addEventListener('DOMContentLoaded', inicializarShell);</script>
+</body>
+</html>

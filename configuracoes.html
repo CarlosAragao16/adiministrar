@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurações — Finanças IA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="mark">💰</span> Finanças IA</div>
+    <nav class="nav-list" aria-label="Navegação principal"></nav>
+    <div class="sidebar-footer">
+      <div class="theme-switch"><span>Tema</span><button data-acao="alternar-tema"><span data-tema-atual>☀️</span></button></div>
+      <div class="user-chip">
+        <div class="user-avatar" data-user-inicial></div>
+        <div class="who"><strong data-user-nome></strong><span data-user-email></span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px; position:relative;">
+        <button class="icon-btn" id="btn-abrir-menu" aria-label="Abrir menu" style="display:none;">☰</button>
+        <div class="global-search">
+          <span>🔍</span>
+          <input type="text" id="busca-global" placeholder="Buscar transações, metas, contas..." aria-label="Busca global">
+        </div>
+        <div id="busca-resultados" class="dropdown-panel" style="top:44px; left:0; right:auto; width:320px;"></div>
+      </div>
+      <div class="actions">
+        <div style="position:relative;">
+          <button class="icon-btn" data-dropdown-trigger="painel-notificacoes" aria-label="Notificações">🔔<span class="badge" id="badge-notificacoes"></span></button>
+          <div class="dropdown-panel" id="painel-notificacoes">
+            <div class="dd-head"><h4>Notificações</h4></div>
+            <div class="dd-list"></div>
+          </div>
+        </div>
+        <a class="icon-btn ai-btn" href="assistente.html" aria-label="Assistente IA" data-tooltip="Assistente IA">🤖</a>
+        <div style="position:relative;">
+          <button class="icon-btn" data-dropdown-trigger="painel-perfil" aria-label="Perfil"><span data-user-inicial style="font-size:13px; font-weight:700;"></span></button>
+          <div class="menu-panel" id="painel-perfil">
+            <a href="configuracoes.html" style="display:flex; gap:8px; padding:10px 14px; font-size:13px;">⚙️ Configurações</a>
+            <button data-acao="sair">🚪 Sair</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="page-head"><div><h1>Configurações</h1><p class="subtitle">Gerencie seu perfil, preferências e dados.</p></div></div>
+
+      <div class="settings-grid">
+        <nav class="settings-nav">
+          <button class="active" data-secao="perfil">👤 Perfil</button>
+          <button data-secao="preferencias">🎛️ Preferências</button>
+          <button data-secao="categorias">🏷️ Categorias</button>
+          <button data-secao="recorrentes">🔄 Contas recorrentes</button>
+          <button data-secao="seguranca">🔒 Segurança</button>
+          <button data-secao="exportacao">⬇️ Exportação de dados</button>
+        </nav>
+
+        <div>
+          <!-- Perfil -->
+          <div class="settings-section active card" id="secao-perfil">
+            <div class="card-title"><h3>Perfil</h3></div>
+            <div class="field"><label for="perfil-nome">Nome</label><input class="input" id="perfil-nome"><span class="error-msg">Informe seu nome.</span></div>
+            <div class="field"><label for="perfil-email">E-mail</label><input class="input" type="email" id="perfil-email"><span class="error-msg">Informe um e-mail válido.</span></div>
+            <button class="btn btn-primary" id="btn-salvar-perfil">Salvar alterações</button>
+          </div>
+
+          <!-- Preferências -->
+          <div class="settings-section card" id="secao-preferencias">
+            <div class="card-title"><h3>Preferências</h3></div>
+            <div class="field"><label for="pref-moeda">Moeda</label>
+              <select class="input" id="pref-moeda"><option value="BRL">Real (R$)</option><option value="USD">Dólar (US$)</option><option value="EUR">Euro (€)</option></select>
+              <span class="hint">A formatação completa de outras moedas chega em uma próxima versão.</span>
+            </div>
+            <div class="field"><label for="pref-idioma">Idioma</label>
+              <select class="input" id="pref-idioma"><option value="pt-BR">Português (Brasil)</option><option value="en-US">English (US)</option></select>
+            </div>
+            <div class="field"><label for="pref-tema">Tema</label>
+              <select class="input" id="pref-tema"><option value="light">☀️ Claro</option><option value="dark">🌙 Escuro</option></select>
+            </div>
+            <button class="btn btn-primary" id="btn-salvar-preferencias">Salvar preferências</button>
+          </div>
+
+          <!-- Categorias -->
+          <div class="settings-section card" id="secao-categorias">
+            <div class="card-title"><h3>Categorias</h3></div>
+            <div id="lista-categorias-config"></div>
+          </div>
+
+          <!-- Contas recorrentes -->
+          <div class="settings-section card" id="secao-recorrentes">
+            <div class="card-title"><h3>🔄 Contas recorrentes</h3><button class="btn btn-primary btn-sm" id="btn-nova-recorrente">+ Adicionar</button></div>
+            <div id="lista-recorrentes-config"></div>
+          </div>
+
+          <!-- Segurança -->
+          <div class="settings-section card" id="secao-seguranca">
+            <div class="card-title"><h3>Segurança</h3></div>
+            <div class="field"><label>Senha atual</label><input class="input" type="password" placeholder="••••••••" disabled></div>
+            <div class="field"><label>Nova senha</label><input class="input" type="password" placeholder="••••••••" disabled></div>
+            <p class="hint">A alteração de senha estará disponível quando um backend de autenticação for conectado.</p>
+            <div class="settings-row" style="margin-top:10px;">
+              <div class="lbl"><strong>Restaurar dados de demonstração</strong><span>Substitui seus dados atuais pelos dados de exemplo.</span></div>
+              <button class="btn btn-secondary btn-sm" id="btn-restaurar-demo">Restaurar</button>
+            </div>
+            <div class="settings-row">
+              <div class="lbl"><strong>Apagar todos os dados</strong><span>Remove permanentemente tudo salvo neste navegador.</span></div>
+              <button class="btn btn-danger btn-sm" id="btn-limpar-dados">Apagar tudo</button>
+            </div>
+          </div>
+
+          <!-- Exportação -->
+          <div class="settings-section card" id="secao-exportacao">
+            <div class="card-title"><h3>⬇️ Exportação de dados</h3></div>
+            <p class="text-muted" style="font-size:13.5px; margin-bottom:16px;">Baixe uma cópia completa dos seus dados financeiros salvos neste navegador.</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn btn-secondary" id="btn-exportar-json">Exportar meus dados (JSON)</button>
+              <button class="btn btn-secondary" id="btn-exportar-csv">Exportar transações (CSV)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Navegação mobile"></nav>
+<button class="fab-add" aria-label="Nova transação" data-acao="nova-transacao">+</button>
+
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="brand"><span class="mark">💰</span> Finanças IA <button id="btn-fechar-drawer" style="margin-left:auto; background:none; border:none; font-size:20px;">✕</button></div>
+  <nav class="nav-list"></nav>
+  <div class="sidebar-footer">
+    <div class="theme-switch"><span>Tema</span><button data-acao="alternar-tema"><span data-tema-atual>☀️</span></button></div>
+    <button class="btn btn-secondary btn-block" data-acao="sair">Sair</button>
+  </div>
+</div>
+
+<!-- Modal Nova Conta Recorrente -->
+<div class="modal-overlay" id="modal-recorrente">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-head"><h2>Nova conta recorrente</h2><button class="icon-btn" data-close-modal>✕</button></div>
+    <div class="modal-body">
+      <form id="form-recorrente" novalidate>
+        <div class="field"><label for="rec-nome">Nome</label><input class="input" id="rec-nome" placeholder="Ex.: Netflix"><span class="error-msg">Informe o nome da conta.</span></div>
+        <div class="input-group">
+          <div class="field" style="flex:1;"><label for="rec-valor">Valor (R$)</label><input class="input" type="number" id="rec-valor" min="0.01" step="0.01"><span class="error-msg">Informe um valor válido.</span></div>
+          <div class="field" style="flex:1;"><label for="rec-dia">Dia do vencimento</label><input class="input" type="number" id="rec-dia" min="1" max="31" placeholder="Ex.: 5"><span class="error-msg">Informe um dia entre 1 e 31.</span></div>
+        </div>
+        <div class="field"><label for="rec-categoria">Categoria</label><select class="input" id="rec-categoria"></select></div>
+        <div class="field"><label for="rec-periodicidade">Periodicidade</label>
+          <select class="input" id="rec-periodicidade"><option>Mensal</option><option>Semanal</option><option>Anual</option></select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+      <button class="btn btn-primary" id="btn-salvar-recorrente">Adicionar conta</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nova Transação -->
+<div class="modal-overlay" id="modal-transacao">
+  <div class="modal">
+    <div class="modal-head"><h2 id="titulo-modal-transacao">Nova transação</h2><button class="icon-btn" data-close-modal>✕</button></div>
+    <div class="modal-body">
+      <form id="form-transacao" novalidate>
+        <input type="hidden" id="tx-id">
+        <div class="field">
+          <label>Tipo</label>
+          <div class="toggle-group" id="toggle-tipo">
+            <button type="button" data-tipo="despesa" class="active">Despesa</button>
+            <button type="button" data-tipo="receita">Receita</button>
+          </div>
+        </div>
+        <div class="field"><label for="tx-descricao">Descrição</label><input class="input" id="tx-descricao" placeholder="Ex.: Supermercado" required><span class="error-msg">Informe uma descrição.</span></div>
+        <div class="input-group">
+          <div class="field" style="flex:1;"><label for="tx-valor">Valor (R$)</label><input class="input" type="number" id="tx-valor" step="0.01" min="0.01" placeholder="0,00" required><span class="error-msg">Informe um valor válido.</span></div>
+          <div class="field" style="flex:1;"><label for="tx-data">Data</label><input class="input" type="date" id="tx-data" required><span class="error-msg">Informe a data.</span></div>
+        </div>
+        <div class="field"><label for="tx-categoria">Categoria</label><select class="input" id="tx-categoria" required></select></div>
+        <div class="field"><label for="tx-forma">Forma de pagamento</label><select class="input" id="tx-forma"></select></div>
+        <div class="field"><label for="tx-observacao">Observação (opcional)</label><textarea class="input" id="tx-observacao"></textarea></div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+      <button class="btn btn-primary" id="btn-salvar-transacao">Salvar transação</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/transacoes.js"></script>
+<script src="js/configuracoes.js"></script>
+<script>document.addEventListener('DOMContentLoaded', inicializarShell);</script>
+</body>
+</html>

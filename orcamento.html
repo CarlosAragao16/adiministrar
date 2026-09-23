@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orçamento — Finanças IA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="mark">💰</span> Finanças IA</div>
+    <nav class="nav-list" aria-label="Navegação principal"></nav>
+    <div class="sidebar-footer">
+      <div class="theme-switch"><span>Tema</span><button data-acao="alternar-tema"><span data-tema-atual>☀️</span></button></div>
+      <div class="user-chip">
+        <div class="user-avatar" data-user-inicial></div>
+        <div class="who"><strong data-user-nome></strong><span data-user-email></span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px; position:relative;">
+        <button class="icon-btn" id="btn-abrir-menu" aria-label="Abrir menu" style="display:none;">☰</button>
+        <div class="global-search">
+          <span>🔍</span>
+          <input type="text" id="busca-global" placeholder="Buscar transações, metas, contas..." aria-label="Busca global">
+        </div>
+        <div id="busca-resultados" class="dropdown-panel" style="top:44px; left:0; right:auto; width:320px;"></div>
+      </div>
+      <div class="actions">
+        <div style="position:relative;">
+          <button class="icon-btn" data-dropdown-trigger="painel-notificacoes" aria-label="Notificações">🔔<span class="badge" id="badge-notificacoes"></span></button>
+          <div class="dropdown-panel" id="painel-notificacoes">
+            <div class="dd-head"><h4>Notificações</h4></div>
+            <div class="dd-list"></div>
+          </div>
+        </div>
+        <a class="icon-btn ai-btn" href="assistente.html" aria-label="Assistente IA" data-tooltip="Assistente IA">🤖</a>
+        <div style="position:relative;">
+          <button class="icon-btn" data-dropdown-trigger="painel-perfil" aria-label="Perfil"><span data-user-inicial style="font-size:13px; font-weight:700;"></span></button>
+          <div class="menu-panel" id="painel-perfil">
+            <a href="configuracoes.html" style="display:flex; gap:8px; padding:10px 14px; font-size:13px;">⚙️ Configurações</a>
+            <button data-acao="sair">🚪 Sair</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="page-head">
+        <div><h1>💳 Orçamento mensal</h1><p class="subtitle">Defina limites por categoria e acompanhe seus gastos em tempo real.</p></div>
+        <button class="btn btn-primary" id="btn-novo-orcamento">+ Novo limite</button>
+      </div>
+
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-title"><h3>Resumo do mês</h3></div>
+        <div style="display:flex; justify-content:space-between; font-size:13.5px; margin-bottom:8px;">
+          <span class="text-muted">Total gasto: <strong class="text-danger" id="resumo-gasto-total">R$ 0,00</strong></span>
+          <span class="text-muted">Limite total: <strong id="resumo-limite-total">R$ 0,00</strong></span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="resumo-barra-total" style="width:0%"></div></div>
+      </div>
+
+      <div class="card">
+        <div id="lista-orcamentos"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Navegação mobile"></nav>
+<button class="fab-add" aria-label="Nova transação" data-acao="nova-transacao">+</button>
+
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="brand"><span class="mark">💰</span> Finanças IA <button id="btn-fechar-drawer" style="margin-left:auto; background:none; border:none; font-size:20px;">✕</button></div>
+  <nav class="nav-list"></nav>
+  <div class="sidebar-footer">
+    <div class="theme-switch"><span>Tema</span><button data-acao="alternar-tema"><span data-tema-atual>☀️</span></button></div>
+    <button class="btn btn-secondary btn-block" data-acao="sair">Sair</button>
+  </div>
+</div>
+
+<!-- Modal Definir Orçamento -->
+<div class="modal-overlay" id="modal-orcamento">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-head"><h2 id="titulo-modal-orcamento">Definir orçamento</h2><button class="icon-btn" data-close-modal>✕</button></div>
+    <div class="modal-body">
+      <form id="form-orcamento" novalidate>
+        <div class="field">
+          <label for="orc-categoria">Categoria</label>
+          <select class="input" id="orc-categoria"></select>
+        </div>
+        <div class="field">
+          <label for="orc-limite">Limite mensal (R$)</label>
+          <input class="input" type="number" id="orc-limite" min="1" step="0.01" placeholder="0,00" required>
+          <span class="error-msg">Informe um limite válido.</span>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+      <button class="btn btn-primary" id="btn-salvar-orcamento">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nova Transação -->
+<div class="modal-overlay" id="modal-transacao">
+  <div class="modal">
+    <div class="modal-head"><h2 id="titulo-modal-transacao">Nova transação</h2><button class="icon-btn" data-close-modal>✕</button></div>
+    <div class="modal-body">
+      <form id="form-transacao" novalidate>
+        <input type="hidden" id="tx-id">
+        <div class="field">
+          <label>Tipo</label>
+          <div class="toggle-group" id="toggle-tipo">
+            <button type="button" data-tipo="despesa" class="active">Despesa</button>
+            <button type="button" data-tipo="receita">Receita</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="tx-descricao">Descrição</label>
+          <input class="input" id="tx-descricao" placeholder="Ex.: Supermercado" required>
+          <span class="error-msg">Informe uma descrição.</span>
+        </div>
+        <div class="input-group">
+          <div class="field" style="flex:1;">
+            <label for="tx-valor">Valor (R$)</label>
+            <input class="input" type="number" id="tx-valor" step="0.01" min="0.01" placeholder="0,00" required>
+            <span class="error-msg">Informe um valor válido.</span>
+          </div>
+          <div class="field" style="flex:1;">
+            <label for="tx-data">Data</label>
+            <input class="input" type="date" id="tx-data" required>
+            <span class="error-msg">Informe a data.</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="tx-categoria">Categoria</label>
+          <select class="input" id="tx-categoria" required></select>
+        </div>
+        <div class="field">
+          <label for="tx-forma">Forma de pagamento</label>
+          <select class="input" id="tx-forma"></select>
+        </div>
+        <div class="field">
+          <label for="tx-observacao">Observação (opcional)</label>
+          <textarea class="input" id="tx-observacao"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+      <button class="btn btn-primary" id="btn-salvar-transacao">Salvar transação</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/transacoes.js"></script>
+<script src="js/orcamento.js"></script>
+<script>document.addEventListener('DOMContentLoaded', inicializarShell);</script>
+</body>
+</html>

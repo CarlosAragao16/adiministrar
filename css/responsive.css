@@ -1,0 +1,63 @@
+/* ==========================================================================
+   FINANÇAS IA — Responsividade
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .meta-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-3col { grid-template-columns: repeat(2, 1fr); }
+  .forecast-grid { grid-template-columns: 1fr; }
+  .global-search { width: 200px; }
+}
+
+@media (max-width: 992px) {
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .grid-2col { grid-template-columns: 1fr; }
+  .settings-grid { grid-template-columns: 1fr; }
+  .main-content { padding: 20px 20px 110px; }
+  .auth-hero { display: none; }
+  .auth-shell { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .topbar { padding: 0 16px; }
+  .global-search { display: none; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .meta-grid { grid-template-columns: 1fr; }
+  .grid-3col { grid-template-columns: 1fr; }
+  .main-content { padding: 16px 16px 110px; }
+  .page-head h1 { font-size: 20px; }
+
+  .bottom-nav { display: flex; }
+  .fab-add { display: flex; }
+
+  .filters-bar { flex-direction: column; align-items: stretch; }
+  .filters-bar .input, .filters-bar select { width: 100%; min-width: 0; }
+
+  table.data-table thead { display: none; }
+  table.data-table, table.data-table tbody, table.data-table tr, table.data-table td { display: block; width: 100%; }
+  table.data-table tr {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 10px; padding: 10px 14px;
+  }
+  table.data-table td {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: none; padding: 7px 0; font-size: 13px; gap: 12px; text-align: right;
+  }
+  table.data-table td::before {
+    content: attr(data-label); font-weight: 600; color: var(--text-muted); text-align: left;
+  }
+
+  .toast-container { left: 12px; right: 12px; bottom: 84px; max-width: none; }
+}
+
+@media (max-width: 576px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .auth-panel { padding: 20px; }
+  .modal { max-width: 100%; }
+  .chat-msg { max-width: 90%; }
+  .onboarding-card h1 { font-size: 24px; }
+  .onboarding-card .mark { font-size: 42px; }
+  .input-group { flex-direction: column; }
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finanças IA — Entrar</title>
+<meta name="description" content="Controle suas finanças pessoais com o poder da inteligência artificial.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-panel">
+    <div class="auth-card">
+      <div class="auth-logo"><span class="mark">💰</span> Finanças IA</div>
+
+      <div id="tela-entrar">
+        <h1>Bem-vindo de volta</h1>
+        <p class="subtitle">Entre para acompanhar suas finanças com apoio de IA.</p>
+
+        <form id="form-login" novalidate>
+          <div class="field">
+            <label for="login-email">E-mail</label>
+            <input class="input" type="email" id="login-email" placeholder="voce@email.com" autocomplete="email" required>
+            <span class="error-msg">Informe um e-mail válido.</span>
+          </div>
+          <div class="field">
+            <label for="login-senha">Senha</label>
+            <input class="input" type="password" id="login-senha" placeholder="••••••••" autocomplete="current-password" required>
+            <span class="error-msg">Informe sua senha.</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+        </form>
+
+        <div class="auth-links">
+          <a href="#" id="link-esqueci">Esqueci minha senha</a>
+          <a href="#" id="link-criar-conta">Criar conta</a>
+        </div>
+
+        <div class="auth-divider">ou</div>
+
+        <button class="btn btn-secondary btn-block" id="btn-demo">✨ Continuar como demonstração</button>
+        <p class="hint" style="text-align:center; margin-top:12px;">Sem backend ainda — os dados ficam salvos apenas no seu navegador.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-hero">
+    <h2>Controle seu dinheiro com a ajuda de uma IA que entende seus dados.</h2>
+    <p>Acompanhe receitas, despesas, metas e orçamento em um só lugar — com insights automáticos gerados a partir do seu histórico financeiro real.</p>
+    <div class="hero-stats">
+      <div><strong>+20</strong><span>transações de exemplo</span></div>
+      <div><strong>100%</strong><span>local no navegador</span></div>
+      <div><strong>24/7</strong><span>assistente IA</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="onboarding-overlay" id="onboarding" style="display:none;">
+  <div class="onboarding-card">
+    <div class="mark">💰</div>
+    <h1>Controle seu dinheiro de forma inteligente.</h1>
+    <p>Organize suas finanças, acompanhe suas metas e use IA para entender seus gastos.</p>
+    <button class="btn btn-primary" id="btn-comecar">Começar</button>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script>
+  aplicarTemaSalvo();
+
+  // Se já estiver logado, vai direto pro dashboard.
+  if (estaLogado()) {
+    window.location.href = 'dashboard.html';
+  }
+
+  function irParaApp() {
+    entrarDemo();
+    loadData(); // garante que os dados de demonstração existam
+    const jaViuOnboarding = localStorage.getItem(ONBOARD_KEY);
+    if (!jaViuOnboarding) {
+      document.getElementById('onboarding').style.display = 'flex';
+    } else {
+      window.location.href = 'dashboard.html';
+    }
+  }
+
+  document.getElementById('btn-comecar').addEventListener('click', () => {
+    localStorage.setItem(ONBOARD_KEY, '1');
+    window.location.href = 'dashboard.html';
+  });
+
+  document.getElementById('btn-demo').addEventListener('click', irParaApp);
+
+  document.getElementById('form-login').addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('login-email');
+    const senha = document.getElementById('login-senha');
+    const emailValido = validarCampo(email, /\S+@\S+\.\S+/.test(email.value), 'Informe um e-mail válido.');
+    const senhaValida = validarCampo(senha, senha.value.length >= 1, 'Informe sua senha.');
+    if (!emailValido || !senhaValida) return;
+
+    // Sem backend: tratamos qualquer login válido como a própria demonstração.
+    showToast('Login de demonstração — nenhum backend está conectado ainda.', 'info');
+    irParaApp();
+  });
+
+  document.getElementById('link-esqueci').addEventListener('click', e => {
+    e.preventDefault();
+    showToast('Recuperação de senha estará disponível quando o backend for conectado.', 'info');
+  });
+  document.getElementById('link-criar-conta').addEventListener('click', e => {
+    e.preventDefault();
+    showToast('Criação de conta estará disponível quando o backend for conectado.', 'info');
+  });
+</script>
+</body>
+</html>

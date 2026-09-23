@@ -1,0 +1,20 @@
+/* ==========================================================================
+   FINANÇAS IA — Dashboard
+   ========================================================================== */
+
+.welcome-bar { margin-bottom: 20px; }
+.welcome-bar h1 { font-size: 23px; margin-bottom: 4px; }
+.welcome-bar p { color: var(--text-muted); font-size: 14px; }
+
+.section-title { display: flex; align-items: center; justify-content: space-between; margin: 26px 0 14px; }
+.section-title h2 { font-size: 16px; }
+.section-title a { font-size: 13px; font-weight: 700; color: var(--primary); }
+
+.forecast-card .card-title h3 { display: flex; align-items: center; gap: 8px; }
+
+.recurring-preview { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+.recurring-chip {
+  flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+  background: var(--surface-alt); border: 1px solid var(--border); border-radius: 999px;
+  padding: 8px 14px; font-size: 12.5px; font-weight: 600;
+}
